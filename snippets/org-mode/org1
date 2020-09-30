@@ -1,0 +1,32 @@
+# key: 1
+# name: org1
+# --
+*  Weekly Journal `(format-time-string "<%Y-%m-%e %a>")`$0
+
+** P/ASE                                                                  :ase:
+
+** P/Autobasis                                                      :autobasis:
+
+** P/CLUSTER                                                          :cluster:
+
+** P/cFDR                                                                :cfdr:
+
+** P/UKBB                                                                :ukbb:
+
+** P/TWAS                                                                :twas:
+
+** P/Sequential                                                    :sequential:
+
+** P/PGS                                                                  :pgs:
+
+** P/Elisa                                                              :elisa:
+
+** S/Anna functional                                                     :anna:
+
+** S/Kath                                                                :kath:
+
+** S/Martin                                                            :martin:
+
+** S/Stephen                                                          :stephen:
+
+** Admin                                                             :admin:
