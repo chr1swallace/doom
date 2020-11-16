@@ -20,12 +20,19 @@
 (package! zygospore)
 (package! key-chord)
 (package! org-sidebar)
+(package! evil-org)
+(package! org-super-agenda)
 ;; (Package! snakemake-mode)
 (package! dash)
 (package! rvm)
 (package! ace-window)
 (package! mood-line)
+(package! imenu-list)
 ;; (package! mixed-pitch)
+;; ** Disabling the built-in snippets
+;; Don't want to use provided one? Then add this to your private module,
+(package! doom-snippets :ignore t)
+(package! yasnippet-snippets)
 
 ;; disable projectile - don't use, may interfere with tramp
 ;; (package! projectile :disable t)

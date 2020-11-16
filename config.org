@@ -1,3 +1,7 @@
+
+* Doom initial things
+#+BEGIN_SRC emacs-lisp
+
 ;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
@@ -23,6 +27,11 @@
   ;; (remove-hook 'buffer-list-update-hook #'doom-run-switch-window-hooks-h)
   ;; (remove-hook 'buffer-list-update-hook #'flycheck-handle-buffer-switch)
   (remove-hook 'buffer-list-update-hook #'doom-run-switch-window-hooks-h))
+#+END_SRC
+
+* theme and appearance
+
+#+BEGIN_SRC emacs-lisp
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
@@ -156,6 +165,11 @@
 ;;   (evil-set-initial-state mode 'emacs))
 (evil-set-initial-state 'dired-mode 'emacs)
 (evil-set-initial-state 'org-agenda-mode 'emacs)
+#+END_SRC
+
+* keys
+
+#+BEGIN_SRC emacs-lisp
 
 ;;
 (bind-key "TAB" #'indent-for-tab-command)
@@ -652,6 +666,11 @@
     ;; (require 'snakemake-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+#+END_SRC
+
+* keys
+
+#+BEGIN_SRC emacs-lisp
 ;; emacs speaks stats
 (defun Rcsd3 ()
   "Run R on CSD3 using the R.darwin script"
@@ -701,6 +720,12 @@
 (after! (key-chord ess-r-mode)
   (key-chord-define-global ">>" "%>%")
   (key-chord-define-global "<>" "%<>%"))
+
+#+END_SRC
+
+*  org-mode
+
+#+BEGIN_SRC emacs-lisp
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -982,6 +1007,13 @@
 ;;       (replace-match ""))))
 ;; (add-hook 'before-save-hook #'my-org-mode-before-save-hook)
 
+
+
+#+END_SRC
+
+* progmode-related
+
+#+BEGIN_SRC emacs-lisp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
   (define-derived-mode rakefile-mode ruby-mode "Rakefile"
@@ -1060,3 +1092,4 @@
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 (global-hl-line-mode 1)
 (setq evil-complete-next-func 'hippie-expand)
+#+END_SRC
