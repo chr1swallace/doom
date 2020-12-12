@@ -26,7 +26,13 @@
   (remove-hook 'kill-emacs-hook #'recentf-cleanup)
   ;; (remove-hook 'buffer-list-update-hook #'doom-run-switch-window-hooks-h)
   ;; (remove-hook 'buffer-list-update-hook #'flycheck-handle-buffer-switch)
-  (remove-hook 'buffer-list-update-hook #'doom-run-switch-window-hooks-h))
+  (remove-hook 'buffer-list-update-hook #'doom-run-switch-window-hooks-h)
+  (remove-hook 'doom-first-buffer-hook #'smartparens-global-mode)) ; smartparens does my head in
+
+
+;; (after! ivy
+;; ivy-done and ivy-immediate-done
+;; )
 #+END_SRC
 
 * theme and appearance
@@ -67,11 +73,16 @@
 ;; (require 'darkburn-theme)
 ;; (setq doom-theme 'darkburn)
 (setq doom-theme 'doom-old-hope)
+;; (setq doom-theme 'modus-vivendi)
+;; (setq modus-vivendi-theme-syntax 'yellow-comments)
+
 (custom-set-faces!
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+  '(default :background "#000000")
+  '(region :background "#101010")
  '(font-lock-comment-face :foreground "#d4d4a4")
  '(font-lock-comment-face :slant italic)
  '(org-headline-done :foreground "yellow green")
@@ -211,7 +222,8 @@
 (map!
  ;; comma stuff
  :nmv "," nil ; release
- ;; I like my window map keys
+
+;; I like my window map keys
  :map evil-window-map
  "v" 'toggle-window-split
  "4" 'toggle-window-split
@@ -220,12 +232,15 @@
  ;; ",b" #'dumb-jump-back
  ;; :map evil-org-mode-map
  ;; :i "C-h" 'help
+
  :map emacs-lisp-mode-map
        :n ",e" 'eval-last-sexp
        :n ",f" 'eval-defun
        :n ",r" 'eval-region
+
        :map bibtex-mode-map
        :n ",k" #'bibtex-copy-key
+
       :map LaTeX-mode-map
       ;; :n ",," 'TeX-command-master
       :n ",="   'reftex-toc
@@ -237,6 +252,7 @@
       :n ",c"   'LaTeX-close-environment ;; C-c ]
       :n ",p" 'preview-buffer
       :n [(control return)] 'LaTeX-insert-item
+
       :map ess-r-mode-map
       :v ",," 'ess-eval-region-and-step
       :v ",r" 'ess-eval-region
@@ -263,7 +279,8 @@
      :leader ; from now on
      :desc "smex" "SPC" 'smex
      "b b" 'switch-to-buffer
-     "a a" 'org-agenda)
+     "a a" 'org-agenda
+     "s d" 'deadgrep)
 
 ;; (define-key evil-motion-state-map "`" nil) ; release ` for hydras
 ;; (define-key evil-normal-state-map "C-SPC" nil) ; release ` for hydras
@@ -617,25 +634,6 @@
 ;; (with-library which-key
 ;;   (which-key-mode)
 ;;   (which-key-setup-side-window-right-bottom))
-(defun block-surround-r ()
-  (interactive)
-  (save-excursion
-    (goto-char (region-beginning))
-    (insert "```{r}\n"))
-  (goto-char (region-end))
-  (insert "\n```"))
-(defun block-insert-r ()
-  "insert ```{r} ... ```"
-  (interactive)
-  (beginning-of-line)
-  (insert "```{r}\n\n```")
-  (forward-line -1))
-(defun block-insert-sh ()
-  "insert ```{sh} ... ```"
-  (interactive)
-  (beginning-of-line)
-  (insert "```{sh}\n\n```")
-  (forward-line -1))
 
 
 
@@ -668,9 +666,32 @@
 
 #+END_SRC
 
-* keys
+* latex
+#+BEGIN_SRC emacs-lisp
+
+(setq reftex-external-file-finders
+      '(("tex" . "kpsewhich -format=.tex %f")
+        ("bib" . "kpsewhich -format=.bib %f"))
+      reftex-bibpath-environment-variables "/home/chrisw/texmf/bibtex/bib"
+      reftex-default-bibliography '("/home/chrisw/Dropbox/Words/papers/zotero.bib"))
+      ;; reftex-default-bibliography '("/home/chrisw/texmf/bibtex/bib/paperpile.bib"))
+#+END_SRC
+
+* ess, tramp, rg
 
 #+BEGIN_SRC emacs-lisp
+
+;; tramp
+;; (use-package! tramp
+(after! tramp
+  (setq tramp-default-method "ssh")
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+;; )
+
+;; rg.el
+(setq rg-executable "rg")
+
+(use-package! ess)
 ;; emacs speaks stats
 (defun Rcsd3 ()
   "Run R on CSD3 using the R.darwin script"
@@ -681,9 +702,6 @@
         ;; (ess-directory "/ssh:csd3:~/")
         )
     (R)))
-
-(use-package! ess)
-;; (add-to-list 'tramp-remote-path "~/bin")
 (use-package! ess-r-mode
   :after ess
   :init
@@ -715,11 +733,32 @@
   :config
   (key-chord-mode 1)
   (setq key-chord-one-keys-delay 0.02
-        key-chord-two-keys-delay 0.03))
+        key-chord-two-keys-delay 0.05))
+(defun block-surround-r ()
+  (interactive)
+  (save-excursion
+    (goto-char (region-beginning))
+    (insert "```{r}\n"))
+  (goto-char (region-end))
+  (insert "\n```"))
+(defun block-insert-r ()
+  "insert ```{r} ... ```"
+  (interactive)
+  (beginning-of-line)
+  (insert "```{r}\n\n```")
+  (forward-line -1))
+(defun block-insert-sh ()
+  "insert ```{sh} ... ```"
+  (interactive)
+  (beginning-of-line)
+  (insert "```{sh}\n\n```")
+  (forward-line -1))
 
 (after! (key-chord ess-r-mode)
   (key-chord-define-global ">>" "%>%")
-  (key-chord-define-global "<>" "%<>%"))
+  (key-chord-define-global "<>" "%<>%")
+  (key-chord-define-global "`r" 'block-insert-r)
+  (key-chord-define-global "`s" 'block-insert-sh))
 
 #+END_SRC
 
@@ -732,8 +771,8 @@
 (setq org-directory "~/Dropbox/org/")
 
 ;; undo doom changes
-(after! evil-org
-  (remove-hook 'org-tab-first-hook #'+org-cycle-only-current-subtree-h))
+;; (after! evil-org
+;;   (remove-hook 'org-tab-first-hook #'+org-cycle-only-current-subtree-h))
 (after! org
   (remove-hook 'org-tab-first-hook #'+org-yas-expand-maybe-h))
 
@@ -786,6 +825,16 @@
 ;;     (org-up-element)
 ;;     (org-entry-properties)))
 
+;; from https://pages.sachachua.com/.emacs.d/Sacha.html
+(defun my/org-refile-and-jump ()
+  (interactive)
+  (if (derived-mode-p 'org-capture-mode)
+      (org-capture-refile)
+    (call-interactively 'org-refile))
+  (org-refile-goto-last-stored))
+(eval-after-load 'org-capture
+ '(bind-key "C-c C-r" 'my/org-refile-and-jump org-capture-mode-map))
+
 (defun me/get-date-tag ()
   "run org-entry-properties on parent heading"
   (interactive)
@@ -818,6 +867,9 @@
             :before
             (lambda (&rest _)
             (me/refile-journal-advisor)))
+
+;; (defun me/refile-and-go ()
+;;   (org-refile))
 
 ;; inline tasks
 (require 'org-inlinetask)
@@ -1015,39 +1067,62 @@
 
 #+BEGIN_SRC emacs-lisp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(after! evil
+  (require 'evil-textobj-anyblock)
+  (evil-define-text-object my-evil-textobj-anyblock-inner-quote
+    (count &optional beg end type)
+    "Select the closest outer quote."
+    (let ((evil-textobj-anyblock-blocks
+           '(("'" . "'")
+             ("\"" . "\"")
+             ("`" . "`")
+             ("“" . "”"))))
+      (evil-textobj-anyblock--make-textobj beg end type count nil)))
 
-  (define-derived-mode rakefile-mode ruby-mode "Rakefile"
-    "Major mode for editing Rakefiles"
-    (setq-local imenu-create-index-function 'rakefile-imenu-create-index))
+  (evil-define-text-object my-evil-textobj-anyblock-a-quote
+    (count &optional beg end type)
+    "Select the closest outer quote."
+    (let ((evil-textobj-anyblock-blocks
+           '(("'" . "'")
+             ("\"" . "\"")
+             ("`" . "`")
+             ("“" . "”"))))
+      (evil-textobj-anyblock--make-textobj beg end type count t)))
 
-  (defun rakefile-imenu-create-index ()
-    (let ((default-directory (file-name-directory buffer-file-name))
-          (rakefile-path (file-name-nondirectory (buffer-file-name)))
-          (index-alist '()))
+  (define-key evil-inner-text-objects-map "q" 'my-evil-textobj-anyblock-inner-quote)
+  (define-key evil-outer-text-objects-map "q" 'my-evil-textobj-anyblock-a-quote))
 
-      (with-temp-buffer
-        (rvm-activate-ruby-for default-directory)
-        (insert (shell-command-to-string (concat "bundle exec rake -f " rakefile-path " -W")))
+(define-derived-mode rakefile-mode ruby-mode "Rakefile"
+  "Major mode for editing Rakefiles"
+  (setq-local imenu-create-index-function 'rakefile-imenu-create-index))
+
+(defun rakefile-imenu-create-index ()
+  (let ((default-directory (file-name-directory buffer-file-name))
+        (rakefile-path (file-name-nondirectory (buffer-file-name)))
+        (index-alist '()))
+
+    (with-temp-buffer
+      (rvm-activate-ruby-for default-directory)
+      (insert (shell-command-to-string (concat "bundle exec rake -f " rakefile-path " -W")))
+      (goto-char (point-min))
+
+      (save-excursion (while (re-search-forward
+                              ;; giant regex to match task name and line number
+                              (concat
+                               "^.*rake \\([[:alnum:][:punct:]]+\\)[[:space:]]*"
+                               default-directory
+                               "Rakefile:\\([[:digit:]]+\\):.*$")
+                              nil t)
+                        (push (cons (match-string 1) (string-to-number (match-string 2))) index-alist)))
+      index-alist)
+    (--each index-alist
+      (save-excursion
         (goto-char (point-min))
+        (forward-line (- (cdr it) 1))
+        (setcdr it (point))))
+    index-alist))
 
-        (save-excursion (while (re-search-forward
-                                ;; giant regex to match task name and line number
-                                (concat
-                                 "^.*rake \\([[:alnum:][:punct:]]+\\)[[:space:]]*"
-                                 default-directory
-                                 "Rakefile:\\([[:digit:]]+\\):.*$")
-                                nil t)
-                          (push (cons (match-string 1) (string-to-number (match-string 2))) index-alist)))
-        index-alist)
-
-      (--each index-alist
-        (save-excursion
-          (goto-char (point-min))
-          (forward-line (- (cdr it) 1))
-          (setcdr it (point))))
-      index-alist))
-
-  (add-to-list 'auto-mode-alist '("Rakefile$" . rakefile-mode))
+(add-to-list 'auto-mode-alist '("Rakefile$" . rakefile-mode))
 
 ;; * MakingScriptsExecutableOnSave
 ;; Check for shebang magic in file after save, make executable if found.

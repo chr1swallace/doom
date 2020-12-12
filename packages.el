@@ -20,7 +20,7 @@
 (package! zygospore)
 (package! key-chord)
 (package! org-sidebar)
-(package! evil-org)
+;; (package! evil-org)
 (package! org-super-agenda)
 ;; (Package! snakemake-mode)
 (package! dash)
@@ -28,7 +28,13 @@
 (package! ace-window)
 (package! mood-line)
 (package! imenu-list)
+(package! markdown-toc)
+(package! org-kanban)
 ;; (package! mixed-pitch)
+(package! rg)
+(package! deadgrep)
+;; (package! modus-operandi-theme)
+;; (package! modus-vivendi-theme)
 ;; ** Disabling the built-in snippets
 ;; Don't want to use provided one? Then add this to your private module,
 (package! doom-snippets :ignore t)
@@ -53,7 +59,7 @@
 ;; If you'd like to disable a package included with Doom, you can do so here
 ;; with the `:disable' property:
                                         ;(package! builtin-package :disable t)
-;; (package! evil-org :disable t)
+(package! evil-org :disable t)
 
 ;; You can override the recipe of a built in package without having to specify
 ;; all the properties for `:recipe'. These will inherit the rest of its recipe
