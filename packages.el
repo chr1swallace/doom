@@ -15,6 +15,7 @@
 (package! evil-commentary)
 (package! evil-surround)
 (package! general)
+(package! poly-markdown)
 (package! poly-R)
 (package! smex)
 (package! zygospore)
@@ -22,6 +23,7 @@
 (package! org-sidebar)
 ;; (package! evil-org)
 (package! org-super-agenda)
+(package! org-download)
 ;; (Package! snakemake-mode)
 (package! dash)
 (package! rvm)
@@ -29,7 +31,8 @@
 (package! mood-line)
 (package! imenu-list)
 (package! markdown-toc)
-(package! org-kanban)
+;(package! org-kanban)
+(package! easy-jekyll)
 ;; (package! mixed-pitch)
 (package! rg)
 (package! deadgrep)
@@ -39,6 +42,10 @@
 ;; Don't want to use provided one? Then add this to your private module,
 (package! doom-snippets :ignore t)
 (package! yasnippet-snippets)
+(package! rainbow-delimiters)
+(package! all)
+(package! stan-mode)
+(package! vimish-fold)
 
 ;; disable projectile - don't use, may interfere with tramp
 ;; (package! projectile :disable t)
@@ -48,6 +55,8 @@
 ;; https://github.com/raxod502/straight.el#the-recipe-format
 ;(package! another-package
 ;  :recipe (:host github :repo "username/repo"))
+;; (package! ESS :recipe (:host github :repo "emacs-ess/ESS") :pin "983c54bd5c21bd9ae859290d32fb9a8a61509352")
+(package! ESS)
 
 ;; If the package you are trying to install does not contain a PACKAGENAME.el
 ;; file, or is located in a subdirectory of the repo, you'll need to specify
